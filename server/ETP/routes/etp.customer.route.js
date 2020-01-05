@@ -3,17 +3,33 @@
 const _ = require('lodash');
 const { merge, SimpleID } = require('server/core/common.js');
 const { CustomerRepository } = require('server/ETP/repositories/etp.customer.repository');
+const { EtpLogMiddleWare } = require('server/ETP/middlewares/etp.log.middleware.js');
 
 const OrderRoutesFactory = ({ app }) => {
 
-  app.route('/ETPConnect/RESTOMSService/Service/CUSTADD_R').post(async (req, res, next) => {
+  app.route('/ETPConnect/Customers').get(async (req, res, next) => {
+    const result = { total: 0, items: [] }
+
+    const filter = { ...req.query, ...req.body };
+
+    result.total = await CustomerRepository.count(filter);
+
+    if (result.total > 0) {
+      result.items = await CustomerRepository.find(filter).sort({ last_sync_at: -1 }).lean(true);
+    }
+
+    return res.json(result);
+  });
+
+  app.route('/ETPConnect/RESTOMSService/Service/CUSTADD_R').post(EtpLogMiddleWare.write, async (req, res, next) => {
     const data = _.get(req.body, 'CustDetails.CustomerInfo');
   
     if (!data) {
       return res.status(400).json({ message: 'invalid data' });
     }  
     const etp_customer_data = merge({}, data, {
-      "CustomerID": "ECOM" + SimpleID()
+      "CustomerID": "ECOM" + SimpleID(),
+      last_sync_at: new Date(),
     });
   
     const created_etp_customer = await CustomerRepository.create(etp_customer_data);
@@ -26,7 +42,7 @@ const OrderRoutesFactory = ({ app }) => {
     }));
   });
   
-  app.route('/ETPConnect/RESTOMSService/Service/CUSTUPD_R').post(async (req, res, next) => {
+  app.route('/ETPConnect/RESTOMSService/Service/CUSTUPD_R').post(EtpLogMiddleWare.write, async (req, res, next) => {
     const data = _.get(req.body, 'CustDetails.CustomerInfo');
   
     if (!data) {
@@ -44,7 +60,7 @@ const OrderRoutesFactory = ({ app }) => {
       return res.status(400).json({ message: `No customer found with CustomerID = ${etp_customer_id}` });
     }
   
-    const etp_customer_data = merge(found_customer, data);
+    const etp_customer_data = merge(found_customer, data, { last_sync_at: new Date() });
   
     const updated_etp_customer = await CustomerRepository.findOneAndUpdate(
       { 'CustomerID': etp_customer_id },
@@ -60,7 +76,7 @@ const OrderRoutesFactory = ({ app }) => {
     }));
   });
   
-  app.route('/ETPConnect/RESTOMSService/Service/CUSTADDUPD_R').post(async (req, res, next) => {
+  app.route('/ETPConnect/RESTOMSService/Service/CUSTADDUPD_R').post(EtpLogMiddleWare.write, async (req, res, next) => {
     const data = _.get(req.body, 'CustDetails.CustomerInfo');
   
     if (!data) { return next(new ERR({ status: 400, body: { message: 'invalid data' } }))}
@@ -76,7 +92,7 @@ const OrderRoutesFactory = ({ app }) => {
     if (!found_customer) { 
       return res.status(400).json({ message: `No customer found with CustomerRefID = ${customer_id}` });
     }  
-    const etp_customer_data = merge(found_customer, data);
+    const etp_customer_data = merge(found_customer, data, { last_sync_at: new Date() });
   
     const updated_etp_customer = await CustomerRepository.findOneAndUpdate(
       { 'CustomerRefID': customer_id },

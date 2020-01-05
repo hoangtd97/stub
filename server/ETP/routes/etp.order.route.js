@@ -3,10 +3,25 @@
 const _ = require('lodash');
 const { merge, SimpleID } = require('server/core/common.js');
 const { OrderRepository } = require('server/ETP/repositories/etp.order.repository.js');
+const { EtpLogMiddleWare } = require('server/ETP/middlewares/etp.log.middleware.js');
 
 const OrderRoutesFactory = ({ app }) => {
 
-  app.route('/ETPConnect/RESTOMSService/Service/ORDADD_R').post(async (req, res, next) => {
+  app.route('/ETPConnect/Orders').get(async (req, res, next) => {
+    const result = { total: 0, items: [] }
+
+    const filter = { ...req.query, ...req.body };
+
+    result.total = await OrderRepository.count(filter);
+
+    if (result.total > 0) {
+      result.items = await OrderRepository.find(filter).sort({ last_sync_at: -1 }).lean(true);
+    }
+
+    return res.json(result);
+  });
+
+  app.route('/ETPConnect/RESTOMSService/Service/ORDADD_R').post(EtpLogMiddleWare.write, async (req, res, next) => {
     const data = _.get(req.body, 'OmniChannelOrder');
   
     if (!data) {
@@ -25,7 +40,7 @@ const OrderRoutesFactory = ({ app }) => {
     }));
   });
   
-  app.route('/ETPConnect/RESTOMSService/Service/ORDCANCL_R').post(async (req, res, next) => {
+  app.route('/ETPConnect/RESTOMSService/Service/ORDCANCL_R').post(EtpLogMiddleWare.write, async (req, res, next) => {
     const data = _.get(req.body, 'OmniChannelOrder');
   
     if (!data) {

@@ -1,11 +1,8 @@
 'use strict';
 
-const { LogMiddleWareFactory } = require('server/core/log.middleware.js');
+const { EtpLogMiddleWare } = require('server/ETP/middlewares/etp.log.middleware.js');
 
 module.exports = ({ app }) => {
-  const LogMiddleWare = LogMiddleWareFactory({ name: 'etp_logs' });
-
-  app.route('/ETPConnect/*').all(LogMiddleWare.write);
-  app.route('/logs').get(LogMiddleWare.read);
-  app.route('/logs/search').post(LogMiddleWare.read);
+  app.route('/ETPConnect/logs').get(EtpLogMiddleWare.read);
+  app.route('/ETPConnect/logs/search').post(EtpLogMiddleWare.read);
 }

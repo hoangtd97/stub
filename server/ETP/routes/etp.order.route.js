@@ -28,7 +28,10 @@ const OrderRoutesFactory = ({ app }) => {
       return res.status(400).json({ message: 'invalid data' });
     }
   
-    const etp_order_data = merge({}, data, { "ocOrderID": SimpleID() });
+    const etp_order_data = merge({}, data, { 
+      ocOrderID: SimpleID(),
+      last_sync_at: new Date()
+    });
   
     const created_etp_order = await OrderRepository.create(etp_order_data);
 
@@ -59,7 +62,8 @@ const OrderRoutesFactory = ({ app }) => {
       OrderStatus: OrderStatusRequest === '14' ? 'Cancelled': OrderStatusRequest,
       OrderCancellation: {
         Reason: CancelReason
-      }
+      },
+      last_sync_at: new Date()
     });
   
     const cancelled_etp_order = await OrderRepository.findOneAndUpdate(

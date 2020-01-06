@@ -1,0 +1,413 @@
+@HOST=http://localhost:3000
+
+### Create order
+POST {{HOST}}/ETPConnect/RESTOMSService/Service/ORDADD_R
+Content-Type: application/json
+
+{
+  "ActionInfo": {
+    "ActionId": "ORDADD_R"
+  },
+  "OmniChannelOrder": {
+    "ocOrderID": [],
+    "SourceOrderNumber": "#101380N01",
+    "RetailOrderNumber": [],
+    "OrderSourceID": "ST999",
+    "OrderSourceName": "ECOM",
+    "OrderDate": "20191211",
+    "OrderTime": "115538",
+    "OrderType": "CD",
+    "StoreCode": "CNGV_12365",
+    "DeliveryDate": [],
+    "OrderStatus": "Received",
+    "PlannedDeliveryDate": [],
+    "CustomerInfo": {
+      "ECommCustID": "1000408098",
+      "CustBasicInfo": {
+        "CustomerID": [],
+        "CustFName": "Khanh",
+        "CustMName": [],
+        "CustLName": "Quỳnh",
+        "CustEmailID": "khanh.dinhngocquynh@haravan.com"
+      },
+      "CustContact": {
+        "PrimaryContactNo": "0928372323",
+        "OtherContactNo": [],
+        "AltContactNo": []
+      },
+      "BillingAddress": {
+        "AddrCode": "1000664972",
+        "AddrLine1": "123 abc",
+        "AddrLine2": "",
+        "AddrLine3": [],
+        "AddrLandmark": [],
+        "County": [],
+        "AddrCity": "68H",
+        "AddrState": [],
+        "AddrZip": "70000",
+        "AddrCountry": "vn"
+      },
+      "ShippingAddress": {
+        "AddrCode": "#101380N01",
+        "AddrLine1": "123 abc",
+        "AddrLine2": "",
+        "AddrLine3": [],
+        "AddrLandmark": [],
+        "County": [],
+        "AddrCity": "68H",
+        "AddrState": [],
+        "AddrZip": "",
+        "AddrCountry": "VN"
+      }
+    },
+    "OrderDetails": {
+      "OrderInfo": [
+        {
+          "ItemID": "1001493508",
+          "Quantity": "1",
+          "UnitPrice": "150000",
+          "SalesPrice": "150000"
+        }
+      ]
+    },
+    "InvoiceDetails": {
+      "eCommReceiptNo": [],
+      "ReceiptDate": [],
+      "ReceipientEmail": "",
+      "InvoiceAmount": []
+    },
+    "PaymentDetails": {
+      "PaymentInfo": {
+        "PaymentMode": "0",
+        "PaymentNumber": "1000650459",
+        "Amount": "150000",
+        "AuthorizationNo": [],
+        "Agency": [],
+        "BankName": [],
+        "Field1": [],
+        "Field2": [],
+        "PaymentDateTime": [],
+        "PaymentWaiting": []
+      }
+    },
+    "OrderCancellation": {
+      "CancellationID": [],
+      "Reason": []
+    }
+  },
+  "RequestInfo": {
+    "RequestKey": "74d36625-4440-4ac5-9e91-ed045a41a521"
+  },
+  "Response": {
+    "RespMsg": [],
+    "RespCode": []
+  }
+}
+
+### Cancel Order
+
+POST {{HOST}}/ETPConnect/RESTOMSService/Service/ORDCANCL_R
+Content-Type: application/json
+
+{
+  "ActionInfo": {
+    "ActionId": "ORDCANCL_R"
+  },
+  "OmniChannelOrder": {
+    "SourceOrderNumber": "#101380N01",
+    "OrderSourceID": "ST999",
+    "OrderSourceName": "ECOM",
+    "OrderDate": "20200103",
+    "StoreCode": "GV_00993",
+    "OrderStatusRequest": "14",
+    "CancelReason": "Vấn đề về dịch vụ cộng thêm"
+  },
+  "RequestInfo": {
+    "RequestKey": "332ae2cb-78ba-4877-a92e-4b268b58baca"
+  },
+  "Response": {
+    "RespMsg": [],
+    "RespCode": []
+  }
+}
+
+### Create customer
+POST {{HOST}}/ETPConnect/RESTOMSService/Service/CUSTADD_R
+Content-Type: application/json
+
+{
+  "ActionInfo": {
+    "ActionId": "CUSTADD_R"
+  },
+  "CompanyInfo": {
+    "Comapny": "999",
+    "Division": "888",
+    "WareHouse": "ECOM",
+    "EComName": "CO3",
+    "ChannelID": "ECOMMERCE"
+  },
+  "CustDetails": {
+    "CustomerInfo": {
+      "CustomerID": [],
+      "CustomerRefID": "1000340904",
+      "CustSrcInfo": "ECOM",
+      "CustFName": "hhh",
+      "CustMName": [],
+      "CustLName": "Dinh",
+      "CustDOB": "20101111",
+      "CustEmailID": "hoang@123.com",
+      "CustAltEmailID": [],
+      "CustUserType": "C",
+      "CustUserLoginID": "hoang@123.com",
+      "CustAddrDetails": {
+        "CustAddrInfo": [
+          {
+            "CustAddrDataType": "LOCAL",
+            "CustAddrCode": "1000594503",
+            "CustAddrLine1": "123 a",
+            "CustAddrLine2": "Xã Phú Cường",
+            "CustAddrLine3": "0968726159",
+            "CustAddrLandmark": [],
+            "CustAddrDist": "Huyện Ba Vì",
+            "CustAddrCity": "2HN",
+            "CustAddrState": "Vietnam",
+            "CustAddrZip": "70000",
+            "CustAddrCountry": "vn"
+          },
+          {
+            "CustAddrDataType": "LOCAL",
+            "CustAddrCode": "1000745469",
+            "CustAddrLine1": "123 abc xxx",
+            "CustAddrLine2": "Xã Phú Cường",
+            "CustAddrLine3": "0968726159",
+            "CustAddrLandmark": [],
+            "CustAddrDist": "Huyện Ba Vì",
+            "CustAddrCity": "2HN",
+            "CustAddrState": "Vietnam",
+            "CustAddrZip": "70000",
+            "CustAddrCountry": "vn"
+          },
+          {
+            "CustAddrDataType": "LOCAL",
+            "CustAddrCode": "1000745323",
+            "CustAddrLine1": "123 abc xxx",
+            "CustAddrLine2": "Xã Phú Cường",
+            "CustAddrLine3": "0968726159",
+            "CustAddrLandmark": [],
+            "CustAddrDist": "Huyện Ba Vì",
+            "CustAddrCity": "2HN",
+            "CustAddrState": "Vietnam",
+            "CustAddrZip": "70000",
+            "CustAddrCountry": "vn"
+          }
+        ]
+      },
+      "CustPhone1": "0968726100",
+      "CustPhone2": "",
+      "Gender": "M",
+      "DefaultAddrDataType": [],
+      "CustInfo1": [],
+      "CustInfo2": [],
+      "CustCreateDate": "20190530",
+      "CustCreateTime": "134439",
+      "LoyaltyRewardDetails": {
+        "LoyaltyRewardInfo": {
+          "LoyaltyScheme": [],
+          "LoyaltySchemeInfoDesc": [],
+          "EarnedTransactions": [],
+          "Rewards": []
+        }
+      }
+    }
+  },
+  "RequestInfo": {
+    "RequestKey": "1da19df9-b95f-4d75-88b0-70c4f60477e1"
+  },
+  "Response": {
+    "RespMsg": [],
+    "RespCode": []
+  }
+}
+
+
+### Update customer
+POST {{HOST}}/ETPConnect/RESTOMSService/Service/CUSTUPD_R
+Content-Type: application/json
+
+{
+  "ActionInfo": {
+    "ActionId": "CUSTUPD_R"
+  },
+  "CompanyInfo": {
+    "Comapny": "999",
+    "Division": "888",
+    "WareHouse": "ECOM",
+    "EComName": "CO3",
+    "ChannelID": "ECOMMERCE"
+  },
+  "CustDetails": {
+    "CustomerInfo": {
+      "CustomerID": "ECOM15782952932327935",
+      "CustomerRefID": "1000340903",
+      "CustSrcInfo": "ECOM",
+      "CustFName": "xxxx",
+      "CustMName": [],
+      "CustLName": "Dinh",
+      "CustDOB": "20101111",
+      "CustEmailID": "hoang@123.com",
+      "CustAltEmailID": [],
+      "CustUserType": "C",
+      "CustUserLoginID": "hoang@123.com",
+      "CustAddrDetails": {
+        "CustAddrInfo": [
+          {
+            "CustAddrDataType": "LOCAL",
+            "CustAddrCode": "1000594503",
+            "CustAddrLine1": "123 a",
+            "CustAddrLine2": "Xã Phú Cường",
+            "CustAddrLine3": "0968726159",
+            "CustAddrLandmark": [],
+            "CustAddrDist": "Huyện Ba Vì",
+            "CustAddrCity": "2HN",
+            "CustAddrState": "Vietnam",
+            "CustAddrZip": "70000",
+            "CustAddrCountry": "vn"
+          },
+          {
+            "CustAddrDataType": "LOCAL",
+            "CustAddrCode": "1000745469",
+            "CustAddrLine1": "123 abc xxx",
+            "CustAddrLine2": "Xã Phú Cường",
+            "CustAddrLine3": "0968726159",
+            "CustAddrLandmark": [],
+            "CustAddrDist": "Huyện Ba Vì",
+            "CustAddrCity": "2HN",
+            "CustAddrState": "Vietnam",
+            "CustAddrZip": "70000",
+            "CustAddrCountry": "vn"
+          },
+          {
+            "CustAddrDataType": "LOCAL",
+            "CustAddrCode": "1000745323",
+            "CustAddrLine1": "123 abc xxx",
+            "CustAddrLine2": "Xã Phú Cường",
+            "CustAddrLine3": "0968726159",
+            "CustAddrLandmark": [],
+            "CustAddrDist": "Huyện Ba Vì",
+            "CustAddrCity": "2HN",
+            "CustAddrState": "Vietnam",
+            "CustAddrZip": "70000",
+            "CustAddrCountry": "vn"
+          }
+        ]
+      },
+      "CustPhone1": "0968726100",
+      "CustPhone2": "",
+      "Gender": "M",
+      "DefaultAddrDataType": [],
+      "CustInfo1": [],
+      "CustInfo2": [],
+      "CustCreateDate": "20190530",
+      "CustCreateTime": "134439",
+      "LoyaltyRewardDetails": {
+        "LoyaltyRewardInfo": {
+          "LoyaltyScheme": [],
+          "LoyaltySchemeInfoDesc": [],
+          "EarnedTransactions": [],
+          "Rewards": []
+        }
+      }
+    }
+  },
+  "RequestInfo": {
+    "RequestKey": "1da19df9-b95f-4d75-88b0-70c4f60477e1"
+  },
+  "Response": {
+    "RespMsg": [],
+    "RespCode": []
+  }
+}
+
+### Update customer address
+POST {{HOST}}/ETPConnect/RESTOMSService/Service/CUSTADDUPD_R
+Content-Type: application/json
+
+{
+  "ActionInfo": {
+    "ActionId": "CUSTADDUPD_R"
+  },
+  "CompanyInfo": {
+    "Comapny": "999",
+    "Division": "888",
+    "WareHouse": "ECOM",
+    "EComName": "CO3",
+    "ChannelID": "ECOMMERCE"
+  },
+  "CustDetails": {
+    "CustomerInfo": {
+      "CustomerRefID": "1000340903",
+      "CustEmailID": "hoang@123.com",
+      "CustAltEmailID": [],
+      "CustUserType": "C",
+      "CustUserLoginID": "",
+      "CustAddrDetails": {
+        "CustAddrInfo": [
+          {
+            "CustAddrDataType": "LOCAL",
+            "CustAddrCode": "1000594503",
+            "CustAddrLine1": "123 a",
+            "CustAddrLine2": "Xã Phú Cường",
+            "CustAddrLine3": "0968726159",
+            "CustAddrLandmark": [],
+            "CustAddrDist": "Huyện Ba Vì",
+            "CustAddrCity": "2HN",
+            "CustAddrState": "Vietnam",
+            "CustAddrZip": "70000",
+            "CustAddrCountry": "vn"
+          },
+          {
+            "CustAddrDataType": "LOCAL",
+            "CustAddrCode": "1000745469",
+            "CustAddrLine1": "123 abc xxx",
+            "CustAddrLine2": "Xã Phú Cường",
+            "CustAddrLine3": "0968726159",
+            "CustAddrLandmark": [],
+            "CustAddrDist": "Huyện Ba Vì",
+            "CustAddrCity": "2HN",
+            "CustAddrState": "Vietnam",
+            "CustAddrZip": "70000",
+            "CustAddrCountry": "vn"
+          },
+          {
+            "CustAddrDataType": "LOCAL",
+            "CustAddrCode": "1000745323",
+            "CustAddrLine1": "123 abc xxx",
+            "CustAddrLine2": "Xã Phú Cường",
+            "CustAddrLine3": "0968726159",
+            "CustAddrLandmark": [],
+            "CustAddrDist": "Huyện Ba Vì",
+            "CustAddrCity": "2HN",
+            "CustAddrState": "Vietnam",
+            "CustAddrZip": "70000",
+            "CustAddrCountry": "vn"
+          }
+        ]
+      },
+      "LoyaltyRewardDetails": {
+        "LoyaltyRewardInfo": {
+          "LoyaltyScheme": [],
+          "LoyaltySchemeInfoDesc": [],
+          "EarnedTransactions": [],
+          "Rewards": []
+        }
+      }
+    }
+  },
+  "RequestInfo": {
+    "RequestKey": "1da19df9-b95f-4d75-88b0-70c4f60477e1"
+  },
+  "Response": {
+    "RespMsg": [],
+    "RespCode": []
+  }
+}

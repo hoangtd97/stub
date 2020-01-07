@@ -11,12 +11,12 @@ const OrderRoutesFactory = ({ app }) => {
   app.route('/ETPConnect/Customers').get(async (req, res, next) => {
     const result = { total: 0, items: [] }
 
-    let { skip, limit, filter } = parseQuery({ query: { ...req.query, ...req.body } });
+    let { skip, limit, filter, fields } = parseQuery({ query: { ...req.query, ...req.body } });
 
     result.total = await CustomerRepository.count(filter);
 
     if (result.total > 0) {
-      result.items = await CustomerRepository.find(filter).skip(skip).limit(limit).sort({ last_sync_at: -1 }).lean(true);
+      result.items = await CustomerRepository.find(filter, fields).skip(skip).limit(limit).sort({ last_sync_at: -1 }).lean(true);
     }
 
     return res.json(result);

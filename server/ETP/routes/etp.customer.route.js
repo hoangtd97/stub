@@ -4,21 +4,36 @@ const _ = require('lodash');
 const { merge, SimpleID } = require('server/core/common.js');
 const { CustomerRepository } = require('server/ETP/repositories/etp.customer.repository');
 const { EtpLogMiddleWare } = require('server/ETP/middlewares/etp.log.middleware.js');
+const { parseQuery } = require('server/core/common.js');
 
 const OrderRoutesFactory = ({ app }) => {
 
   app.route('/ETPConnect/Customers').get(async (req, res, next) => {
     const result = { total: 0, items: [] }
 
-    const filter = { ...req.query, ...req.body };
+    let { skip, limit, filter } = parseQuery({ query: { ...req.query, ...req.body } });
 
     result.total = await CustomerRepository.count(filter);
 
     if (result.total > 0) {
-      result.items = await CustomerRepository.find(filter).sort({ last_sync_at: -1 }).lean(true);
+      result.items = await CustomerRepository.find(filter).skip(skip).limit(limit).sort({ last_sync_at: -1 }).lean(true);
     }
 
     return res.json(result);
+  });
+
+  app.route('/ETPConnect/Customers/CustomerRefID/:CustomerRefID').get(async (req, res, next) => {
+    const CustomerRefID = req.params['CustomerRefID'];
+
+    const filter = { CustomerRefID };
+
+    const found_customer = await CustomerRepository.findOne(filter).lean(true);
+
+    if (!found_customer) { 
+      return res.status(400).json({ message: `No customer found with CustomerRefID = ${CustomerRefID}` })
+    }
+
+    return res.json(found_customer);
   });
 
   app.route('/ETPConnect/RESTOMSService/Service/CUSTADD_R').post(EtpLogMiddleWare.write, async (req, res, next) => {

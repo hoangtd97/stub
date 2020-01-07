@@ -2,6 +2,7 @@
 
 const _ = require('lodash');
 const { MongoRepository } = require('server/core/mongo-repository.js');
+const { parseQuery } = require('server/core/common.js');
 
 const LogSchema = MongoRepository.Schema({
   at: { type: Date, default: Date.now }
@@ -53,12 +54,12 @@ const LogMiddleWareFactory = ({ LogRepository, name = 'logs', schema = LogSchema
     read: async (req, res, next) => {
       const result = { total: 0, items: [] }
 
-      const filter = { ...req.query, ...req.body };
+      let { skip, limit, filter } = parseQuery({ query: { ...req.query, ...req.body } });
 
       result.total = await LogRepository.count(filter);
 
       if (result.total > 0) {
-        result.items = await LogRepository.find(filter).sort({ at: -1 }).lean(true);
+        result.items = await LogRepository.find(filter).skip(skip).limit(limit).sort({ at: -1 }).lean(true);
       }
 
       return res.json(result);

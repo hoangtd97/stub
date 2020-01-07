@@ -33,6 +33,7 @@ const Server = () => {
       require('server/ETP/routes/etp.customer.route.js')({ app });
 
       app.route('/').get((req, res, next) => res.send('Hi, how can i help you ?'));
+      app.use('/docs', express.static('docs', { extensions: ['html', 'htm', 'md'], index: ['index.html', 'index.html', 'index.md'] }))
     },
     init: async () => {
       const config = server._config;

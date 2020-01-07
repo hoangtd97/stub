@@ -4,21 +4,40 @@ const _ = require('lodash');
 const { merge, SimpleID } = require('server/core/common.js');
 const { OrderRepository } = require('server/ETP/repositories/etp.order.repository.js');
 const { EtpLogMiddleWare } = require('server/ETP/middlewares/etp.log.middleware.js');
+const { parseQuery } = require('server/core/common.js');
 
 const OrderRoutesFactory = ({ app }) => {
 
   app.route('/ETPConnect/Orders').get(async (req, res, next) => {
     const result = { total: 0, items: [] }
 
-    const filter = { ...req.query, ...req.body };
+    let { skip, limit, filter } = parseQuery({ query: { ...req.query, ...req.body } });
 
     result.total = await OrderRepository.count(filter);
 
     if (result.total > 0) {
-      result.items = await OrderRepository.find(filter).sort({ last_sync_at: -1 }).lean(true);
+      result.items = await OrderRepository.find(filter).skip(skip).limit(limit).sort({ last_sync_at: -1 }).lean(true);
     }
 
     return res.json(result);
+  });
+
+  app.route('/ETPConnect/Orders/SourceOrderNumber/:SourceOrderNumber').get(async (req, res, next) => {
+    let SourceOrderNumber = req.params['SourceOrderNumber'];
+
+    if (!SourceOrderNumber.startsWith('#')) {
+      SourceOrderNumber = '#' + SourceOrderNumber;
+    }
+
+    const filter = { SourceOrderNumber };
+
+    const found_order = await OrderRepository.findOne(filter).lean(true);
+
+    if (!found_order) { 
+      return res.status(400).json({ message: `No order found with SourceOrderNumber = ${SourceOrderNumber}` })
+    }
+
+    return res.json(found_order);
   });
 
   app.route('/ETPConnect/RESTOMSService/Service/ORDADD_R').post(EtpLogMiddleWare.write, async (req, res, next) => {

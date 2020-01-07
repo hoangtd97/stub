@@ -18,6 +18,15 @@ const common = {
       })
     }
     return object;
+  },
+  parseQuery({ query, defaults = { page : 1, limit : 20 }, maxLimit = 1000 }) {
+    let { page = 1, limit = 20, ...filter } = { ...defaults, ...query };
+
+    page = Number(page);
+    limit = Math.min(Number(limit), maxLimit);
+    let skip = (page - 1) * limit;
+
+    return { page, skip, limit, filter };
   }
 };
 

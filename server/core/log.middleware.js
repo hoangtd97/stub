@@ -6,7 +6,7 @@ const { parseQuery } = require('server/core/common.js');
 
 const LogSchema = MongoRepository.Schema({
   at: { type: Date, default: Date.now }
-}, { strict: false });
+}, { strict: false, versionKey: false });
 
 const LogMiddleWareFactory = ({ LogRepository, name = 'logs', schema = LogSchema }) => {
 

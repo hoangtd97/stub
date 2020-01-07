@@ -27,7 +27,7 @@ const config = {
       pass: ENV.MONGO_DB_PASSWORD,
     },
     debug: ENV.MONGO_DB_DEBUG,
-    prefix: ENV.MONGO_DB_PREFIX || 'knes_test_api_'
+    prefix: ENV.MONGO_DB_PREFIX || ''
   }
 };
 

@@ -17,4 +17,4 @@
 * Lấy chi tiết đơn hàng theo mã đơn : [/ETPConnect/Orders/SourceOrderNumber/ECO-101585ABCD](/ETPConnect/Orders/SourceOrderNumber/ECO-101585ABCD)
 
 ## Test
-* [Simple API calling]((api.rest)), use in vscode with extension [REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client).
+* [Simple API calling](api.rest), use in vscode with extension [REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client).

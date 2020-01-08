@@ -1,5 +1,14 @@
 @HOST=http://localhost:3000
 
+### List logs
+GET {{HOST}}/ETPConnect/logs
+
+### List customer
+GET {{HOST}}/ETPConnect/Customers
+
+### List orders
+GET {{HOST}}/ETPConnect/Orders
+
 ### Create order
 POST {{HOST}}/ETPConnect/RESTOMSService/Service/ORDADD_R
 Content-Type: application/json

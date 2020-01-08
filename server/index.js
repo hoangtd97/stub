@@ -45,7 +45,7 @@ const Server = () => {
       return server;
     },
     start: async () => {
-      const { host, port } = server._config.server;
+      const { host, port } = server._config.RestfulServer;
 
       return new Promise(resolve => {
         server._app.listen(port, host, () => {

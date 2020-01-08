@@ -5,9 +5,9 @@ require('dotenv').config();
 const ENV = process.env;
 
 const config = {
-  server: {
-    host: ENV.HOST,
-    port: ENV.PORT,
+  RestfulServer: {
+    host: ENV.RESTFUL_SERVER_HOST,
+    port: ENV.RESTFUL_SERVER_PORT,
   },
   MongoDB: {
     uri: ENV.MONGO_DB_URI,

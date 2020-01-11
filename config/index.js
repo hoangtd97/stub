@@ -7,7 +7,7 @@ const ENV = process.env;
 const config = {
   RestfulServer: {
     host: ENV.RESTFUL_SERVER_HOST,
-    port: ENV.RESTFUL_SERVER_PORT,
+    port: ENV.RESTFUL_SERVER_PORT || ENV.PORT,
   },
   MongoDB: {
     uri: ENV.MONGO_DB_URI,

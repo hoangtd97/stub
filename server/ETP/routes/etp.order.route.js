@@ -25,10 +25,6 @@ const OrderRoutesFactory = ({ app }) => {
   app.route('/ETPConnect/Orders/SourceOrderNumber/:SourceOrderNumber').get(async (req, res, next) => {
     let SourceOrderNumber = req.params['SourceOrderNumber'];
 
-    if (!SourceOrderNumber.startsWith('#')) {
-      SourceOrderNumber = '#' + SourceOrderNumber;
-    }
-
     const filter = { SourceOrderNumber };
 
     const found_order = await OrderRepository.findOne(filter).lean(true);
@@ -62,7 +58,7 @@ const OrderRoutesFactory = ({ app }) => {
     }));
   });
   
-  app.route('/ETPConnect/RESTOMSService/Service/ORDCANCL_R').post(EtpLogMiddleWare.write, async (req, res, next) => {
+  app.route('/ETPConnect/RESTOMSService/Service/ORDCNCL_R').post(EtpLogMiddleWare.write, async (req, res, next) => {
     const data = _.get(req.body, 'OmniChannelOrder');
   
     if (!data) {

@@ -2,6 +2,7 @@
 
 const express = require('express');
 const bodyParser = require('body-parser');
+const directory = require('serve-index');
 const { MongoRepository } = require('server/core/mongo-repository');
 
 const Server = () => {  
@@ -33,7 +34,11 @@ const Server = () => {
       require('server/ETP/routes/etp.customer.route.js')({ app });
 
       app.route('/').get((req, res, next) => res.send('Hi, how can i help you ?'));
-      app.use('/docs', express.static('docs', { extensions: ['html', 'htm', 'md'], index: ['index.html', 'index.html', 'index.md'] }))
+      app.use('/docs', 
+        express.static('docs', { extensions: ['html', 'htm', 'md'], index: ['index.html', 'index.html', 'index.md'] }),
+        directory('docs', {'icons': true})
+      );
+      app.use('/files', directory('public/files', {'icons': true}));
     },
     init: async () => {
       const config = server._config;

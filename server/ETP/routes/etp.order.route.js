@@ -94,6 +94,29 @@ const OrderRoutesFactory = ({ app }) => {
       }
     }));
   });
+
+  app.route('/ETPConnect/RESTOMSService/Service/ORDUPD_R').post(EtpLogMiddleWare.write, async (req, res, next) => {
+    const data = _.get(req.body, 'OcOrderUpdateInfo');
+  
+    if (!data) {
+      return res.status(400).json({ message: 'invalid data' });
+    }
+
+    const { SourceOrderNumber } = data;
+  
+    const found_order = await OrderRepository.findOne({ SourceOrderNumber }).lean(true);
+  
+    if (!found_order) { 
+      return res.status(400).json({ message: `No order found with SourceOrderNumber = ${SourceOrderNumber}` })
+    }
+  
+    return res.json(Object.assign({}, req.body, {
+      "Response": {
+        "RespCode": "0000",
+        "RespMsg": "Order Save SuccessFully."
+      }
+    }));
+  });
 }
 
 module.exports = OrderRoutesFactory;

@@ -4,7 +4,10 @@ const _ = require('lodash');
 
 const common = {
   SimpleID() {
-    return `${Date.now()}${_.padStart(Math.ceil(Math.random() * 10000), 4, '0')}`;
+    const num_id = (Date.now() * 10000) + Math.round(10000 * Math.random());
+    const raw_string_id = num_id.toString(16);
+    const id = raw_string_id.toUpperCase();
+    return id;
   },
   merge(object, ...sources) {
     for (let source of sources) {

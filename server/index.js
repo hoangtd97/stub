@@ -4,6 +4,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const directory = require('serve-index');
 const { MongoRepository } = require('server/core/mongo-repository');
+const { ERR_SERVER_FAILED } = require('server/core/errors');
 
 const Server = () => {  
   const server = {
@@ -14,6 +15,7 @@ const Server = () => {
       MongoRepository.config(config.MongoDB);
       server.configPreMiddleWares();
       server.configRoutes();
+      server.configPostMiddleWares();
 
       return server;
     },
@@ -26,18 +28,33 @@ const Server = () => {
       }));
       app.use(bodyParser.json({ limit: '50mb' }));
     },
+    configPostMiddleWares() {
+      const app = server._app;
+
+      app.use((error, req, res, next) => {
+        const server_error = new ERR_SERVER_FAILED(error);
+
+        server_error.log();
+
+        return res.status(500).json(server_error.clientView());
+      })
+    },
     configRoutes() {
       const app = server._app;
 
       require('server/ETP/routes/etp.log.route.js')({ app });
       require('server/ETP/routes/etp.order.route.js')({ app });
       require('server/ETP/routes/etp.customer.route.js')({ app });
+      require('server/VIN_SAP/routes/vin-sap.order.route')({ app });
+      require('server/VIN_SAP/routes/vin-sap.log.route')({ app });
 
-      app.route('/').get((req, res, next) => res.send('Hi, how can i help you ?'));
+      app.route('/').get((req, res, next) => res.redirect('/docs'));
+
       app.use('/docs', 
         express.static('docs', { extensions: ['html', 'htm', 'md'], index: ['index.html', 'index.html', 'index.md'] }),
         directory('docs', {'icons': true})
       );
+
       app.use('/files', directory('public/files', {'icons': true}));
     },
     init: async () => {
@@ -54,7 +71,7 @@ const Server = () => {
 
       return new Promise(resolve => {
         server._app.listen(port, host, () => {
-          console.log(`Server's listening on port ${port}`);
+          console.log(`Server's listening on: ${host || 'http://localhost'}:${port}`);
         });
         return resolve();
       });

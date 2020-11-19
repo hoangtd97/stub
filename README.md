@@ -7,6 +7,7 @@ This project includes some stub servers for testing API
 Edit variable in [.env](.env) file
 
 ## Services 
+* ETP Connect
 
 ### Docs
 To read docs, please install chrome extension [Markdown Viewer](https://chrome.google.com/webstore/detail/markdown-viewer/ckkdlimhmcjmikdlpkmbgfkaikojcbjk)
